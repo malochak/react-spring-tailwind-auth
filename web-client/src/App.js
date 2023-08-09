@@ -1,12 +1,13 @@
 import './App.css';
-import Home from "./screens/Home";
-import Layout from "./components/layout/Layout";
+import {Router} from "./constants/Router";
+import {RouterProvider} from "react-router-dom";
+import {Suspense} from "react";
 
 function App() {
     return (
-        <Layout>
-            <Home/>
-        </Layout>
+        <Suspense fallback={<div>Loading...</div>}>
+            <RouterProvider router={Router}/>
+        </Suspense>
     );
 }
 
