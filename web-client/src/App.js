@@ -2,9 +2,16 @@ import './App.css';
 
 function App() {
     return (
-        <h1 className="text-3xl font-bold underline">
-            Hello world!
-        </h1>
+        <div>
+            <div className="navbar bg-base-100">
+                <div className="flex-1">
+                    <a className="btn btn-ghost normal-case text-xl">App Name</a>
+                </div>
+                <div className="flex-none">
+                    <button className="btn btn-primary">Sign In</button>
+                </div>
+            </div>
+        </div>
     );
 }
 
