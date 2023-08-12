@@ -6,7 +6,7 @@ function Header() {
         <div className="navbar bg-base-100">
             <div className="flex-1">
                 <Link to="/">
-                    <a className="btn btn-ghost normal-case text-xl">App Name</a>
+                    <span className="btn btn-ghost normal-case text-xl">App Name</span>
                 </Link>
             </div>
             <div className="flex-none">
