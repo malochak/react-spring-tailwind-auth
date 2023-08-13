@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
 import logo from '../../assets/logo/logo-512.png';
+import {Link} from "react-router-dom";
 
 function LoginForm() {
 
@@ -77,9 +78,9 @@ function LoginForm() {
 
                     <p className="mt-4 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                        <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        <Link to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                             Register a new account
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
