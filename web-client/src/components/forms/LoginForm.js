@@ -84,19 +84,6 @@ function LoginForm() {
                 </div>
             </div>
         </>
-        // <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        //     <label className="label">Email</label>
-        //     <input type="email"
-        //            placeholder="E-mail"
-        //            className="input input-bordered input-primary w-full"
-        //            {...register("email", { required: true })}
-        //     />
-        //     <input type="password"
-        //            placeholder="Password"
-        //              {...register("password", { required: true })}
-        //            className="input input-bordered input-primary w-full"/>
-        //     <button type='submit' className="btn btn-primary">Sign In</button>
-        // </form>
     );
 }
 
