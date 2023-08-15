@@ -1,4 +1,4 @@
-package dev.mkon.servermono;
+package dev.mkon.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
