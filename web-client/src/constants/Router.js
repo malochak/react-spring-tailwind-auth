@@ -1,9 +1,9 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy} from "react";
+import {AuthenticationType} from "../screens/Authentication";
 
 const Home = lazy(() => import('../screens/Home'));
-const Login = lazy(() => import('../screens/Login'));
-const Register = lazy(() => import('../screens/Register'));
+const Authentication = lazy(() => import('../screens/Authentication'));
 
 export const Router = createBrowserRouter([
         {
@@ -12,11 +12,11 @@ export const Router = createBrowserRouter([
         },
         {
             path: '/login',
-            element: <Login/>
+            element: <Authentication type={AuthenticationType.LOGIN}/>
         },
         {
             path: '/register',
-            element: <Register/>
+            element: <Authentication type={AuthenticationType.REGISTER}/>
         }
     ]
 )
