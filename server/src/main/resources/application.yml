@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: platform-server
+  data:
+    mongodb:
+      host: localhost
+      database: platform
+      username: root
+      password: ${platform_db_pass}
+      authentication-database: admin
