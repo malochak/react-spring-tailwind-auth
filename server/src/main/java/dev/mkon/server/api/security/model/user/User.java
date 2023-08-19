@@ -1,6 +1,7 @@
 package dev.mkon.server.api.security.model.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
 @Document("users")
 @NoArgsConstructor
 @AllArgsConstructor
