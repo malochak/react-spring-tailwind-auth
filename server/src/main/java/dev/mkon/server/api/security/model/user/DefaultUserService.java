@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import dev.mkon.server.api.dto.user.CreateUserDto;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultUserDetailsService implements UserDetailsService {
+public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,9 +28,10 @@ public class DefaultUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public ResponseEntity<Map<String, String>> registerUser(CreateUserDto createUserDto) {
+    // todo - get rid of ResponseEntity
+    public ResponseEntity<Map<String, String>> createUser(CreateUserDto createUserDto) {
 
-        // todo - introduce controller advice to handle it
+        // todo - introduce controller advice to handle validation errors
 
         var validationResult = validateCreateUserDto(createUserDto);
 
