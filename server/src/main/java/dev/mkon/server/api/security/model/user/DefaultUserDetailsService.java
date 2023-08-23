@@ -7,9 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
+
+import dev.mkon.server.api.dto.user.CreateUserDto;
 
 @Slf4j
 @Service
@@ -17,6 +21,7 @@ import java.util.Map;
 public class DefaultUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -24,21 +29,37 @@ public class DefaultUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public ResponseEntity<Map<String, String>> save(String email, String password) {
+    public ResponseEntity<Map<String, String>> registerUser(CreateUserDto createUserDto) {
 
-        /* todo - introduce UserDTO in shared module
-                and  throw exception if user already exists
-                then introduce controller advice to handle it
-         */
+        // todo - introduce controller advice to handle it
 
-        if (userRepository.existsByEmail(email)) {
-            log.info("user with email '{}' already exists", email);
+        var validationResult = validateCreateUserDto(createUserDto);
+
+        if (!CollectionUtils.isEmpty(validationResult)) {
             return ResponseEntity.badRequest()
-                .body(Map.of("message", "user already exists"));
+                .body(validationResult);
         }
 
-        var user = userRepository.save(new User(null, email, password));
+        var user = userRepository.save(new User(
+            null,
+            createUserDto.email(),
+            passwordEncoder.encode(createUserDto.password())
+        ));
 
         return ResponseEntity.ok().body(Map.of("id", user.getId()));
+    }
+
+    private Map<String, String> validateCreateUserDto(CreateUserDto createUserDto) {
+        if (userRepository.existsByEmail(createUserDto.email())) {
+            log.info("user with email '{}' already exists", createUserDto.email());
+            return Map.of("message", "user already exists");
+        }
+
+        if (!createUserDto.password().equals(createUserDto.confirmPassword())) {
+            log.info("Passwords for user with email '{}' don't match", createUserDto.email());
+            return Map.of("message", "passwords don't match");
+        }
+
+        return Map.of();
     }
 }

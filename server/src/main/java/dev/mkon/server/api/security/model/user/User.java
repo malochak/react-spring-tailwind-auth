@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+import dev.mkon.server.api.dto.user.CreateUserDto;
+
 @Getter
 @Document("users")
 @NoArgsConstructor
