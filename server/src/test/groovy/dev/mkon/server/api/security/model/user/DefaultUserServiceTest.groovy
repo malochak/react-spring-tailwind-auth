@@ -4,6 +4,7 @@ import dev.mkon.server.api.dto.user.CreateUserDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 import spock.lang.Subject
@@ -31,6 +32,17 @@ class DefaultUserServiceTest extends Specification {
             result == user
     }
 
+    def "given not existing username (email) when loadByUserName should return User"() {
+        given:
+            String username = DUMMY_EMAIL
+
+        when:
+            userService.loadUserByUsername(username)
+
+        then:
+            thrown(UsernameNotFoundException)
+            1 * userRepository.findByEmail(username) >> Optional.empty()
+    }
 
     def "given valid CreateUserDto when create then user is created"() {
         given:
