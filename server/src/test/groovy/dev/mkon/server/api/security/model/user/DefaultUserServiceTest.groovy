@@ -31,4 +31,21 @@ class DefaultUserServiceTest extends Specification {
             response.statusCode == HttpStatus.OK
             response.body == [id: "1wysadwe"]
     }
+
+    def "given CreateUserDto with existing email when create then user is not created"() {
+        given:
+            CreateUserDto createUserDto = new CreateUserDto("dummy@email.com", "same_password", "same_password")
+
+        when:
+            ResponseEntity<Map<String, String>> response = userService.createUser(createUserDto)
+
+        then:
+            1 * userRepository.existsByEmail("dummy@email.com") >> true
+            0 * passwordEncoder.encode(_)
+            0 * userRepository.save(_)
+
+            response.statusCode == HttpStatus.BAD_REQUEST
+            response.body == [message: "User with email '${createUserDto.email()}' already exists"] as Map<String, String>
+    }
+
 }

@@ -51,13 +51,15 @@ public class DefaultUserService implements UserService {
 
     private Map<String, String> validateCreateUserDto(CreateUserDto createUserDto) {
         if (userRepository.existsByEmail(createUserDto.email())) {
-            log.info("user with email '{}' already exists", createUserDto.email());
-            return Map.of("message", "user already exists");
+            log.info("User with email '{}' already exists", createUserDto.email());
+            return Map.of("message",
+                String.format("User with email '%s' already exists", createUserDto.email()));
         }
 
         if (!createUserDto.password().equals(createUserDto.confirmPassword())) {
             log.info("Passwords for user with email '{}' don't match", createUserDto.email());
-            return Map.of("message", "passwords don't match");
+            return Map.of("message", String.format("Passwords for user with email '%s' don't match",
+                createUserDto.email()));
         }
 
         return Map.of();
