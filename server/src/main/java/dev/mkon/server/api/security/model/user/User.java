@@ -1,6 +1,7 @@
 package dev.mkon.server.api.security.model.user;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-import dev.mkon.server.api.dto.user.CreateUserDto;
-
 @Getter
 @Document("users")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 class User implements UserDetails {
     private String id;
     private String email;
