@@ -1,13 +1,4 @@
-/*div input {*/
-/*    margin: 10px 0px;*/
-/*}*/
-
-/* content vertical and horizontal middle*/
 .content {
     display: flex;
-    /*flex-direction: column;*/
     justify-content: center;
-    /*align-items: center;*/
-    /*height minus header minus margins in layout my-8*/
-    /*height: calc(100vh - 64px - 2rem - 2rem);*/
 }
