@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,9 +24,10 @@ public class SecurityConfig {
             .cors(AbstractHttpConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/auth/**")
+                .requestMatchers("/auth/**", "/login/**", "/error/**")
                 .permitAll()
                 .anyRequest().authenticated())
+            .oauth2Login(Customizer.withDefaults())
             .userDetailsService(userDetailsService);
 
         return http.build();
