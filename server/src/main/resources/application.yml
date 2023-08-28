@@ -8,3 +8,15 @@ spring:
       username: root
       password: ${platform_db_pass}
       authentication-database: admin
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google_client_id}
+            client-secret: ${google_client_secret}
+
+logging:
+  level:
+    org.springframework.security: TRACE
+
