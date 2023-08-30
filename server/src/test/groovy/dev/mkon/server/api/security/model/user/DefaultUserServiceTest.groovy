@@ -78,9 +78,10 @@ class DefaultUserServiceTest extends Specification {
             response.body == [message: expectedMessage] as Map<String, String>
 
         where:
-            description           | existingEmail | userDto                                                             || expectedMessage
-            "existing email"      | true          | new CreateUserDto(DUMMY_EMAIL, "same_password", "same_password")    || "User with email '${userDto.email()}' already exists"
-            "different passwords" | false         | new CreateUserDto(DUMMY_EMAIL, "same_password", "another_password") || "Passwords for user with email '${userDto.email()}' don't match"
+            description                              | existingEmail | userDto                                                             || expectedMessage
+            "existing email"                         | true          | new CreateUserDto(DUMMY_EMAIL, "same_password", "same_password")    || "User with email '${userDto.email()}' already exists"
+            "different passwords"                    | false         | new CreateUserDto(DUMMY_EMAIL, "same_password", "another_password") || "Passwords for user with email '${userDto.email()}' don't match"
+            "existing email and different passwords" | true          | new CreateUserDto(DUMMY_EMAIL, "same_password", "another_password") || "User with email '${userDto.email()}' already exists"
     }
 
 }
