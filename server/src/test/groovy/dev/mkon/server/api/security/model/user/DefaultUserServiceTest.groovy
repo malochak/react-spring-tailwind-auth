@@ -8,10 +8,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Unroll
 
 class DefaultUserServiceTest extends Specification {
 
-    String DUMMY_EMAIL = "dummy@email.com"
+    static String DUMMY_EMAIL = "dummy@email.com"
 
     UserRepository userRepository = Mock()
     PasswordEncoder passwordEncoder = Mock()
@@ -32,7 +33,7 @@ class DefaultUserServiceTest extends Specification {
             result == user
     }
 
-    def "given not existing username (email) when loadByUserName should return User"() {
+    def "given not existing username (email) when loadByUserName should throw UsernameNotFoundException"() {
         given:
             String username = DUMMY_EMAIL
 
@@ -60,36 +61,26 @@ class DefaultUserServiceTest extends Specification {
             response.body == [id: "1wysadwe"]
     }
 
-    def "given CreateUserDto with existing email when create then user is not created"() {
+    @Unroll
+    def "given CreateUserDto with #description when create then user is not created"() {
         given:
-            CreateUserDto createUserDto = new CreateUserDto(DUMMY_EMAIL, "same_password", "same_password")
+            CreateUserDto createUserDto = userDto
 
         when:
             ResponseEntity<Map<String, String>> response = userService.createUser(createUserDto)
 
         then:
-            1 * userRepository.existsByEmail(DUMMY_EMAIL) >> true
+            1 * userRepository.existsByEmail(DUMMY_EMAIL) >> existingEmail
             0 * passwordEncoder.encode(_)
             0 * userRepository.save(_)
 
             response.statusCode == HttpStatus.BAD_REQUEST
-            response.body == [message: "User with email '${createUserDto.email()}' already exists"] as Map<String, String>
-    }
+            response.body == [message: expectedMessage] as Map<String, String>
 
-    def "given CreateUserDto with different password and confirmPassword when create then user is not created"() {
-        given:
-            CreateUserDto createUserDto = new CreateUserDto(DUMMY_EMAIL, "same_password", "another_password")
-
-        when:
-            ResponseEntity<Map<String, String>> response = userService.createUser(createUserDto)
-
-        then:
-            1 * userRepository.existsByEmail(DUMMY_EMAIL) >> false
-            0 * passwordEncoder.encode(_)
-            0 * userRepository.save(_)
-
-            response.statusCode == HttpStatus.BAD_REQUEST
-            response.body == [message: "Passwords for user with email '${createUserDto.email()}' don't match"] as Map<String, String>
+        where:
+            description           | existingEmail | userDto                                                             || expectedMessage
+            "existing email"      | true          | new CreateUserDto(DUMMY_EMAIL, "same_password", "same_password")    || "User with email '${userDto.email()}' already exists"
+            "different passwords" | false         | new CreateUserDto(DUMMY_EMAIL, "same_password", "another_password") || "Passwords for user with email '${userDto.email()}' don't match"
     }
 
 }
